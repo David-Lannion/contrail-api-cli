@@ -3,11 +3,12 @@ from setuptools import setup, find_packages
 
 install_requires = [
     'pygments',
-    'prompt_toolkit<2',
+    'prompt_toolkit>=2',
     'keystoneauth1',
     'requests>=2.20.0',
-    'gevent<1.3',
-    'datrie'
+    'gevent>=1.3',
+    'datrie',
+    'six>=1.16'
 ]
 
 test_requires = []
@@ -19,13 +20,13 @@ if sys.version_info[0] == 2:
 
 setup(
     name='contrail-api-cli',
-    version='0.4.0rc1',
+    version='0.5.0',
     description="Simple CLI program to browse Contrail API server",
     long_description=open('README.md').read(),
     author="Jean-Philippe Braun",
     author_email="eon@patapon.info",
-    maintainer="Jean-Philippe Braun",
-    maintainer_email="eon@patapon.info",
+    maintainer="David MAHEO",
+    maintainer_email="dav.maheo@gmail.com",
     url="http://www.github.com/eonpatapon/contrail-api-cli",
     packages=find_packages(),
     package_data={'contrail_api_cli': ['schemas/*/*']},
@@ -72,8 +73,10 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development :: User Interfaces',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4'
+        'Programming Language :: Python :: 3.9'
+    ],
+    dependency_links=[
+        'https://artifactory-iva.si.francetelecom.fr/artifactory/api/pypi/pythonproxy/simple'
     ],
     keywords='contrail api cli',
     tests_require=test_requires,

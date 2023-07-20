@@ -26,15 +26,10 @@ class Kv(Command):
     """
     description = "Retrieve the key-value store as json"
 
-    delete = Option("-D", type=str, metavar='key',
-                    help="Delete key entry")
-    add = Option("-a", nargs=2, metavar=('key', 'value'),
-                 help="Add a key and a value")
-    get = Option("-g", type=str, metavar='key',
-                 help="Get a entry from a key")
-    list_all = Option("-l", action="store_true",
-                      default=False,
-                      help="List all entries")
+    delete = Option("-D", type=str, metavar='key', help="Delete key entry")
+    add = Option("-a", nargs=2, metavar=('key', 'value'), help="Add a key and a value")
+    get = Option("-g", type=str, metavar='key', help="Get a entry from a key")
+    list_all = Option("-l", action="store_true", default=False, help="List all entries")
 
     def __call__(self, add=None, delete=None, list_all=False, get=None):
         if add is not None:
@@ -45,8 +40,7 @@ class Kv(Command):
             return None
         elif get is not None:
             value = Context().session.search_kv_store(get)
-            result = [{"key": get,
-                       "value": value}]
+            result = [{"key": get, "value": value}]
         elif list_all:
             result = Context().session.get_kv_store()
         else:

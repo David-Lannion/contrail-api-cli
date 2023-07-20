@@ -46,8 +46,8 @@ class Batch(Command):
                 if result:
                     printo(result)
         except IOError:
-            raise CommandError("Cannot read from file: {}".format(fileinput.filename()))
+            raise CommandError(f"Cannot read from file: {fileinput.filename()}")
         except CommandNotFound:
-            raise CommandError("Command {} not found".format(action[0]))
+            raise CommandError(f"Command {action[0]} not found")
         finally:
             fileinput.close()

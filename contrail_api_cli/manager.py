@@ -49,8 +49,7 @@ class CommandManager(object):
         self.mgrs = [mgr for mgr in self.mgrs if not mgr.namespace == ns]
 
     def _on_failure(self, mgr, entrypoint, exc):
-        print('Cannot load command %s: %s' % (entrypoint.name,
-                                              exc))
+        print(f'Cannot load command {entrypoint.name}: {exc}')
 
     def get(self, name):
         """Return command instance of loaded
@@ -62,7 +61,7 @@ class CommandManager(object):
         for cmd_name, cmd in self.list:
             if cmd_name == name:
                 return cmd
-        raise CommandNotFound('Command %s not found. Type help for all commands' % name)
+        raise CommandNotFound(f'Command {name} not found. Type help for all commands')
 
     @property
     def extensions(self):
@@ -79,7 +78,7 @@ class CommandManager(object):
             # to load earlier
             if ext.obj is None:
                 continue
-            yield (ext.name, ext.obj)
+            yield ext.name, ext.obj
 
     def add(self, name, cmd):
         ext = extension.Extension(name, None, cmd.__class__, cmd)

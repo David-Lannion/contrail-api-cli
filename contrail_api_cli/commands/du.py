@@ -20,8 +20,7 @@ class Du(Command):
 
     def __call__(self, paths=None):
         try:
-            collections = expand_paths(paths,
-                                       predicate=lambda r: isinstance(r, Collection))
+            collections = expand_paths(paths, predicate=lambda r: isinstance(r, Collection))
         except NotFound:
             raise CommandError("No collection to count")
         result = []

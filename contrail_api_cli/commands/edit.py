@@ -23,20 +23,16 @@ class Edit(Command):
     on an existing resource.
     """
     description = "Edit resource"
-    path = Arg(nargs=1, help="Resource path",
-               complete='resources::path')
-    template = Option('-t',
-                      help="Create new resource from existing",
-                      action="store_true", default=False)
+    path = Arg(nargs=1, help="Resource path", complete='resources::path')
+    template = Option('-t', help="Create new resource from existing", action="store_true", default=False)
     aliases = ['vim = edit', 'emacs = edit', 'nano = edit']
 
     def __call__(self, path=None, template=False):
-        resources = expand_paths(path,
-                                 predicate=lambda r: isinstance(r, Resource))
+        resources = expand_paths(path, predicate=lambda r: isinstance(r, Resource))
         if len(resources) > 1:
             raise CommandError("Can't edit multiple resources")
         resource = resources[0]
-        # don't show childs or back_refs
+        # don't show children or back_refs
         resource.fetch(exclude_children=True, exclude_back_refs=True)
         resource.pop('id_perms')
         if template:

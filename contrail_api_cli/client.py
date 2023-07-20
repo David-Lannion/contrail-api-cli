@@ -16,6 +16,7 @@ from keystoneauth1.exceptions.http import HttpError
 def contrail_error_handler(f):
     """Handle HTTP errors returned by the API server
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         try:
@@ -27,6 +28,7 @@ def contrail_error_handler(f):
                 e.message, e.details = e.details, e.message
                 e.args = ("%s (HTTP %s)" % (e.message, e.http_status),)
             raise
+
     return wrapper
 
 

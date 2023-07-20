@@ -8,11 +8,7 @@ from functools import wraps
 from datetime import datetime
 import itertools
 import logging
-try:
-    from UserDict import UserDict
-    from UserList import UserList
-except ImportError:
-    from collections import UserDict, UserList
+from collections import UserDict, UserList
 
 import datrie
 from keystoneauth1.exceptions.http import HttpError
@@ -22,7 +18,6 @@ from .utils import FQName, Path, Observable, to_json
 from .exceptions import ResourceNotFound, ResourceMissing, \
     CollectionNotFound, ChildrenExists, BackRefsExists, IsSystemResource
 from .context import Context
-
 
 logger = logging.getLogger(__name__)
 
@@ -58,26 +53,24 @@ def http_error_handler(f):
                 # contrail 3.2
                 matches = re.match(r'^Delete when children still present: (\[[^]]*\])($| \(HTTP 409\)$)', e.message)
                 if matches:
-                    raise ChildrenExists(
-                        resources=list(hrefs_list_to_resources(matches.group(1))))
+                    raise ChildrenExists(resources=list(hrefs_list_to_resources(matches.group(1))))
                 matches = re.match(r'^Delete when resource still referred: (\[[^]]*\])($| \(HTTP 409\)$)', e.message)
                 if matches:
-                    raise BackRefsExists(
-                        resources=list(hrefs_list_to_resources(matches.group(1))))
+                    raise BackRefsExists(resources=list(hrefs_list_to_resources(matches.group(1))))
                 # contrail 2.21
                 matches = re.match(r'^Children (.*) still exist($| \(HTTP 409\)$)', e.message)
                 if matches:
-                    raise ChildrenExists(
-                        resources=list(hrefs_to_resources(matches.group(1))))
+                    raise ChildrenExists(resources=list(hrefs_to_resources(matches.group(1))))
                 matches = re.match(r'^Back-References from (.*) still exist($| \(HTTP 409\)$)', e.message)
                 if matches:
-                    raise BackRefsExists(
-                        resources=list(hrefs_to_resources(matches.group(1))))
+                    raise BackRefsExists(resources=list(hrefs_to_resources(matches.group(1))))
                 # contrail 5.1
-                matches = re.match(r'^Cannot modify system resource (.*) .*\(([a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})\)($| \(HTTP 409\)$)', e.message)
+                matches = re.match(r'^Cannot modify system resource (.*) .*\(([a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})\)($| \(HTTP 409\)$)',
+                    e.message)
                 if matches:
                     raise IsSystemResource(resources=[Resource(matches.group(1), uuid=matches.group(2))])
             raise
+
     return wrapper
 
 
@@ -107,6 +100,7 @@ class LinkedResources(object):
      Resource(/virtual-network/6dee5930-5ea3-4fa9-adfd-6d5b68c360b7),
      Resource(/routing-instance/e055dd4f-d7d9-4979-95ac-44a5c6269278)]
     """
+
     def __init__(self, link_type, resource):
         self.link_type = link_type
         self.resource = resource
@@ -140,7 +134,7 @@ class LinkedResources(object):
 
     def __dir__(self):
         return sorted(set(dir(type(self)) + list(self.__dict__) +
-                      [t.replace('-', '_') for t in self.linked_types]))
+                          [t.replace('-', '_') for t in self.linked_types]))
 
     def encode(self, data, recursive=1):
         for attr, _ in list(data.items()):
@@ -160,7 +154,7 @@ class LinkedResources(object):
         return data
 
     def __repr__(self):
-        return '%s' % list(self.__iter__())
+        return f'{list(self.__iter__())}'
 
 
 class ResourceEncoder(json.JSONEncoder):
@@ -312,13 +306,16 @@ class Collection(ResourceBase, UserList):
         self.filters.append((field_name, field_value))
         return self
 
-    def _format_fetch_params(self, fields=[], detail=False, filters=[],
+    def _format_fetch_params(self, fields=None, detail=False, filters=None,
                              parent_uuid=None, back_refs_uuid=None):
+        if fields is None:
+            fields = []
+        if filters is None:
+            filters = []
         params = {}
         detail = detail or self.detail
         fields_str = ",".join(self._fetch_fields(fields))
-        filters_str = ",".join(['%s==%s' % (f, json.dumps(v))
-                                for f, v in self._fetch_filters(filters)])
+        filters_str = ",".join([f'{f}=={json.dumps(v)}' for f, v in self._fetch_filters(filters)])
         parent_uuid_str = ",".join(self._fetch_parent_uuid(parent_uuid))
         back_refs_uuid_str = ",".join(self._fetch_back_refs_uuid(back_refs_uuid))
         if detail is True:
@@ -400,7 +397,7 @@ class Collection(ResourceBase, UserList):
 class RootCollection(Collection):
 
     def __init__(self, **kwargs):
-        return super(RootCollection, self).__init__('', **kwargs)
+        super(RootCollection, self).__init__('', **kwargs)
 
 
 class Resource(ResourceBase, UserDict):
@@ -444,7 +441,7 @@ class Resource(ResourceBase, UserDict):
 
     def __init__(self, type, fetch=False, check=False,
                  parent=None, recursive=1, session=None, **kwargs):
-        assert('fq_name' in kwargs or 'uuid' in kwargs or 'to' in kwargs)
+        assert ('fq_name' in kwargs or 'uuid' in kwargs or 'to' in kwargs)
         super(Resource, self).__init__(session=session)
         self.type = type
 
@@ -471,7 +468,7 @@ class Resource(ResourceBase, UserDict):
 
     def __dir__(self):
         return sorted(set(dir(type(self)) + list(self.__dict__) +
-                      self.properties.keys()))
+                          list(self.properties.keys())))
 
     def __eq__(self, other):
         if not isinstance(other, Resource) or not self.type == other.type:
@@ -758,6 +755,7 @@ class Actions:
 class ResourceCache(object):
     """Resource cache of discovered resources.
     """
+
     def __init__(self):
         self.cache = {
             'resources': datrie.Trie(string.printable),
@@ -776,7 +774,7 @@ class ResourceCache(object):
 
     def search(self, strings, limit=None):
         return self.search_collections(strings, limit=limit) + \
-            self.search_resources(strings, limit=limit)
+               self.search_resources(strings, limit=limit)
 
     def _search(self, trie, strings, limit=None):
         """Search in cache
@@ -836,7 +834,7 @@ class ResourceCache(object):
             path = path / word_before_cursor
 
         logger.debug('Search for %s' % path)
-        results = getattr(self, 'search_' + cache_type)([text_type(path)])
+        results = getattr(self, f"search_{cache_type}")([text_type(path)])
         seen = set()
         for r in results:
             if (r.type, r.uuid) in seen:

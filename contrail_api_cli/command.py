@@ -46,7 +46,7 @@ class BaseOption(object):
     @property
     def is_multiple(self):
         return self.kwargs.get('nargs') in ('*', '+') or \
-            self.kwargs.get('action') in ('append',)
+               self.kwargs.get('action') in ('append',)
 
     @property
     def nargs(self):

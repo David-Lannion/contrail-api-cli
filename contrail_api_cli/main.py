@@ -18,7 +18,6 @@ from .schema import create_schema_from_version, list_available_schema_version, D
 from .context import Context
 from . import client
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -31,7 +30,7 @@ def get_subcommand_kwargs(mgr, name, namespace):
     for opt in list(subcmd.args.values()) + list(subcmd.options.values()):
         if hasattr(namespace, opt.dest):
             subcmd_kwargs[opt.dest] = getattr(namespace, opt.dest)
-    return (subcmd, subcmd_kwargs)
+    return subcmd, subcmd_kwargs
 
 
 def main():
@@ -81,7 +80,7 @@ def main():
 
     try:
         subcmd, subcmd_kwargs = get_subcommand_kwargs(mgr, options.subcmd, options)
-        logger.debug('Calling %s with %s' % (subcmd, subcmd_kwargs))
+        logger.debug(f'Calling {subcmd} with {subcmd_kwargs}')
         result = subcmd(**subcmd_kwargs)
     except (HTTPClientError, HttpError, CommandError, SchemaError, Exists, NotFound) as e:
         printo(text_type(e), std_type='stderr')

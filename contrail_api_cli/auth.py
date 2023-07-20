@@ -28,5 +28,5 @@ class HTTPAuth(BaseAuthPlugin):
     def get_headers(self, session, **kwargs):
         if self.username is None and self.password is None:
             return {}
-        auth = "%s:%s" % (self.username, self.password)
-        return {'Authorization': 'Basic %s' % base64.b64encode(b(auth)).decode('utf-8')}
+        auth = f"{self.username}:{self.password}"
+        return {'Authorization': f'Basic {base64.b64encode(b(auth)).decode("utf-8")}'}

@@ -23,10 +23,8 @@ class Exec(Command):
     consider to write a proper command.
     """
     description = "Run a python script inside the cli"
-    script = Arg(help="script path to run",
-                 type=argparse.FileType('r'))
-    script_args = Arg(help="script args",
-                      nargs="*")
+    script = Arg(help="script path to run", type=argparse.FileType('r'))
+    script_args = Arg(help="script args", nargs="*")
 
     def __call__(self, script=None, script_args=None):
         exec(script, {'args': script_args})

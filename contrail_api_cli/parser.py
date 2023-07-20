@@ -5,7 +5,6 @@ import logging
 from .manager import CommandManager
 from .exceptions import CommandNotFound, CommandInvalid
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -107,8 +106,8 @@ class CommandParser(object):
                     arg not in used):
                 yield arg
             elif (type(arg.nargs) is int and
-                    arg.nargs > 1 and
-                    not arg.nargs == used.count(arg)):
+                  arg.nargs > 1 and
+                  not arg.nargs == used.count(arg)):
                 yield arg
 
     def get_option(self, option_str):

@@ -32,6 +32,7 @@ class IDLParser(object):
 
         def IsMap(self):
             return self.is_map is True
+
     # end class Property
 
     class Link(object):
@@ -44,14 +45,14 @@ class IDLParser(object):
             self.presence = presence
             self.operations = operations
             self.description = description
+
     # end class Link
 
     def __init__(self):
         self._ElementDict = {}
 
     def Parse(self, infile):
-        xml_comment = re.compile(r'<!--\s*#IFMAP-SEMANTICS-IDL(.*?)-->',
-                                 re.DOTALL)
+        xml_comment = re.compile(r'<!--\s*#IFMAP-SEMANTICS-IDL(.*?)-->', re.DOTALL)
         file_matches = xml_comment.findall(infile.read())
         # Remove newline, split at stmt boundary
         matches = [re.sub('\n', '', match).split(';') for match in file_matches]
@@ -59,7 +60,7 @@ class IDLParser(object):
             for stmt in statements:
                 # Oper in idl becomes method
                 try:
-                    eval("self._%s" % (stmt.lstrip()))
+                    eval(f"self._{stmt.lstrip()}")
                 except TypeError:
                     logger = logging.getLogger('idl_parser')
                     logger.debug('ERROR statement: %s', stmt)
@@ -82,9 +83,9 @@ class IDLParser(object):
     def GetLinkInfo(self, link_name):
         if link_name in self._ElementDict:
             idl_link, from_name, to_name, attrs = self._ElementDict[link_name]
-            return (from_name, to_name, attrs)
+            return from_name, to_name, attrs
         else:
-            return (None, None, None)
+            return None, None, None
 
     def _Type(self, type_name, attrs):
         logger = logging.getLogger('idl_parser')
@@ -152,8 +153,8 @@ class IDLParser(object):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.exit('Usage: %s schema.xsd' % sys.argv[0])
+        sys.exit(f'Usage: {sys.argv[0]} schema.xsd')
     if not os.path.exists(sys.argv[1]):
-        sys.exit('Error: %s not found' % sys.argv[1])
+        sys.exit(f'Error: {sys.argv[1]} not found')
     idl_parser = IDLParser()
     idl_parser.Parse(sys.argv[1])

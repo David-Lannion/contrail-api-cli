@@ -56,22 +56,13 @@ class Ls(Command):
         instance-ip/f9d25887-2765-4ba0-bf45-54b9dbc5874a  f9d25887-2765-4ba0-bf45-54b9dbc5874a
     """
     description = "List resource objects"
-    paths = Arg(nargs="*", help="Resource path(s)",
-                metavar='path',
-                complete='collections::path')
-    long = Option('-l',
-                  default=False, action="store_true",
-                  help="use a long listing format")
-    column = Option('-c', action="append",
-                    help="fields to show in long mode",
-                    default=[], dest="fields",
-                    metavar="field_name")
-    filter = Option('-f', action="append",
-                    help="filter predicate",
-                    default=[], dest='filters',
-                    metavar='field_name=field_value')
-    parent_uuid = Option('-P', help="filter by parent uuid",
-                         complete="resources::uuid")
+    paths = Arg(nargs="*", help="Resource path(s)", metavar='path', complete='collections::path')
+    long = Option('-l', default=False, action="store_true", help="use a long listing format")
+    column = Option('-c', action="append", help="fields to show in long mode",
+                    default=[], dest="fields", metavar="field_name")
+    filter = Option('-f', action="append", help="filter predicate",
+                    default=[], dest='filters', metavar='field_name=field_value')
+    parent_uuid = Option('-P', help="filter by parent uuid", complete="resources::uuid")
     # fields to show in -l mode when no
     # column is specified
     default_fields = [u'fq_name']
@@ -102,8 +93,7 @@ class Ls(Command):
         try:
             name, value = predicate.split('=')
         except ValueError:
-            raise CommandError('Invalid filter predicate %s. '
-                               'Use name=value format.' % predicate)
+            raise CommandError(f'Invalid filter predicate {predicate}. Use name=value format.')
         if value == 'False':
             value = False
         elif value == 'True':
@@ -115,18 +105,16 @@ class Ls(Command):
                 value = int(value)
             except ValueError:
                 value = text_type(value)
-        return (name, value)
+        return name, value
 
-    def __call__(self, paths=None, long=False, fields=None,
-                 filters=None, parent_uuid=None):
+    def __call__(self, paths=None, long=False, fields=None, filters=None, parent_uuid=None):
         if not long:
             fields = []
         elif not fields:
             fields = self.default_fields
         if filters:
             filters = [self._get_filter(p) for p in filters]
-        resources = expand_paths(paths, filters=filters,
-                                 parent_uuid=parent_uuid)
+        resources = expand_paths(paths, filters=filters, parent_uuid=parent_uuid)
         result = []
         for r in resources:
             if isinstance(r, Collection):

@@ -31,14 +31,10 @@ class Cat(Command):
                 metavar='path', complete='resources::path')
 
     def __call__(self, paths=None):
-        resources = expand_paths(paths,
-                                 predicate=lambda r: isinstance(r, Resource))
+        resources = expand_paths(paths, predicate=lambda r: isinstance(r, Resource))
         result = []
         for r in resources:
             r.fetch()
             json_data = r.json()
-            if self.is_piped:
-                result.append(json_data)
-            else:
-                result.append(highlight_json(json_data))
+            result.append(json_data if self.is_piped else highlight_json(json_data))
         return "".join(result)

@@ -12,7 +12,6 @@ from .parser import CommandParser, CommandInvalid
 from .exceptions import CommandNotFound
 from .utils import printo
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -33,16 +33,13 @@ class Ln(Command):
         └── virtual-router/f6f0b262-745b-45f7-a40a-32ffc1f469bc             default-global-system-config:vrouter-1
     """
     description = "Link two resources"
-    resources = Arg(help='resource to link', metavar='PATH', nargs=2,
-                    complete='resources::path')
-    remove = Option('-r', help='remove link',
-                    action='store_true', default=False)
+    resources = Arg(help='resource to link', metavar='PATH', nargs=2, complete='resources::path')
+    remove = Option('-r', help='remove link', action='store_true', default=False)
 
     @require_schema()
     def __call__(self, resources=None, remove=None, schema_version=None):
         for idx, r in enumerate(resources):
-            resources[idx] = expand_paths([r],
-                                          predicate=lambda r: isinstance(r, Resource))[0]
+            resources[idx] = expand_paths([r], predicate=lambda r: isinstance(r, Resource))[0]
 
         res1, res2 = resources
 
@@ -57,5 +54,4 @@ class Ln(Command):
             else:
                 res1.add_back_ref(res2)
         else:
-            raise CommandError("Can't link %s with %s" % (self.current_path(res1),
-                                                          self.current_path(res2)))
+            raise CommandError(f"Can't link {self.current_path(res1)} with {self.current_path(res2)}")

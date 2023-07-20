@@ -37,14 +37,14 @@ class SchemaError(Exception):
 class SchemaVersionNotAvailable(SchemaError):
     def __init__(self, version):
         self.version = version
-        msg = "Schema version %s is not available" % self.version
+        msg = f"Schema version {self.version} is not available"
         Exception.__init__(self, msg)
 
 
 class ResourceNotDefined(SchemaError):
     def __init__(self, resource_name):
         self.resource_name = resource_name
-        msg = "Resource '%s' is not defined in the schema" % self.resource_name
+        msg = f"Resource '{self.resource_name}' is not defined in the schema"
         Exception.__init__(self, msg)
 
 
@@ -108,7 +108,7 @@ def create_schema_from_xsd_directory(directory, version):
     """
     schema = Schema(version)
     for f in _get_xsd_from_directory(directory):
-        logger.info("Loading schema %s" % f)
+        logger.info(f"Loading schema {f}")
         fill_schema_from_xsd_file(f, schema)
     return schema
 
@@ -123,7 +123,7 @@ def fill_schema_from_xsd_file(filename, schema):
     properties_all = []
 
     for v in ifmap_statements.values():
-        if (isinstance(v[0], IDLParser.Link)):
+        if isinstance(v[0], IDLParser.Link):
             src_name = v[1]
             target_name = v[2]
             src = schema._get_or_add_resource(src_name)
@@ -184,10 +184,10 @@ class ResourceProperty(object):
         self.key = name.replace('-', '_')
 
     def __unicode__(self):
-        return "%s" % self.name
+        return f"{self.name}"
 
     def __repr__(self):
-        return '%s(%s)' % (self.__class__.__name__, self.key)
+        return f'{self.__class__.__name__}({self.key})'
 
 
 class ResourceSchema(object):
@@ -263,7 +263,7 @@ def require_schema(version=None):
                     op = operator.eq
                     vers = parse_version(parts[0])
                 if not op(current_version, vers):
-                    raise SchemaError("Schema version must be %s" % version)
+                    raise SchemaError(f"Schema version must be {version}")
             return func(*args, **kwargs)
         return wrapper
     return decorated

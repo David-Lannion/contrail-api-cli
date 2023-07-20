@@ -41,10 +41,9 @@ class ResourceNotFound(NotFound):
     def __str__(self):
         if self.r is None:
             return "Resource not found"
-        return "Resource %s not found" % self.r.path \
+        return f"Resource {self.r.path} not found" \
             if self.r.path.is_uuid \
-            else "Resource %s/%s not found" % \
-            (self.r.type, text_type(self.r.fq_name))
+            else f"Resource {self.r.type}/{text_type(self.r.fq_name)} not found"
 
 
 class CollectionNotFound(NotFound):
@@ -52,7 +51,7 @@ class CollectionNotFound(NotFound):
     def __str__(self):
         if self.c is None:
             return "Collection not found"
-        return "Collection %s not found" % self.c.path
+        return f"Collection {self.c.path} not found"
 
 
 class Exists(GreenletExit):
@@ -74,16 +73,16 @@ class Exists(GreenletExit):
 class ChildrenExists(Exists):
 
     def __str__(self):
-        return "Children %s exists" % self._paths
+        return f"Children {self._paths} exists"
 
 
 class BackRefsExists(Exists):
 
     def __str__(self):
-        return "Back references from %s exists" % self._paths
+        return f"Back references from {self._paths} exists"
 
 
 class IsSystemResource(Exists):
 
     def __str__(self):
-        return "System resources %s cannot be changed" % self._paths
+        return f"System resources {self._paths} cannot be changed"
