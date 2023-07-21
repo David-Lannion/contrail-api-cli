@@ -1,21 +1,5 @@
-import sys
+
 from setuptools import setup, find_packages
-
-install_requires = [
-    'pygments',
-    'prompt_toolkit>=2',
-    'keystoneauth1',
-    'requests>=2.20.0',
-    'gevent>=1.3',
-    'datrie',
-    'six>=1.16'
-]
-
-test_requires = []
-
-if sys.version_info[0] == 2:
-    install_requires.append('pathlib')
-    test_requires.append('mock')
 
 
 setup(
@@ -30,7 +14,6 @@ setup(
     url="http://www.github.com/eonpatapon/contrail-api-cli",
     packages=find_packages(),
     package_data={'contrail_api_cli': ['schemas/*/*']},
-    install_requires=install_requires,
     scripts=[],
     license="MIT",
     entry_points={
@@ -79,6 +62,5 @@ setup(
         'https://artifactory-iva.si.francetelecom.fr/artifactory/api/pypi/pythonproxy/simple'
     ],
     keywords='contrail api cli',
-    tests_require=test_requires,
     test_suite="contrail_api_cli.tests"
 )
