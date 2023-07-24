@@ -6,9 +6,9 @@ try:
 except ImportError:
     import unittest.mock as mock
 
-import contrail_api_cli.schema as schema
-from contrail_api_cli.context import Context
-from contrail_api_cli.resource import Resource, LinkedResources, LinkType, Collection
+from src import contrail_api_cli as schema
+from src.contrail_api_cli.context import Context
+from src.contrail_api_cli.resource import Resource, LinkedResources, LinkType, Collection
 
 BASE = "http://localhost:8082"
 

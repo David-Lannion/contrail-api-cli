@@ -5,8 +5,8 @@ try:
 except ImportError:
     import unittest.mock as mock
 
-from contrail_api_cli.context import Context
-from contrail_api_cli.schema import DummySchema, DummyResourceSchema
+from src.contrail_api_cli.context import Context
+from src.contrail_api_cli.schema import DummySchema, DummyResourceSchema
 
 
 class CLITest(unittest.TestCase):

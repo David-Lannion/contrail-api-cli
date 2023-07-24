@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 import unittest
 from uuid import uuid4
 
-from contrail_api_cli.utils import Path
-from contrail_api_cli.exceptions import AbsPathRequired
+from src.contrail_api_cli.utils import Path
+from src.contrail_api_cli.exceptions import AbsPathRequired
 
 
 class TestPath(unittest.TestCase):

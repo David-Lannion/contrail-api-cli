@@ -214,7 +214,7 @@ class ResourceBase(Observable):
 class Collection(ResourceBase, UserList):
     """Class for interacting with an API collection
 
-    >>> from contrail_api_cli.resource import Collection
+    >>> from src.contrail_api_cli import Collection
     >>> c = Collection('virtual-network', fetch=True)
     >>> # iterate over the resources
     >>> for r in c:
@@ -403,7 +403,7 @@ class RootCollection(Collection):
 class Resource(ResourceBase, UserDict):
     """Class for interacting with an API resource
 
-    >>> from contrail_api_cli.resource import Resource
+    >>> from src.contrail_api_cli import Resource
     >>> r = Resource('virtual-network',
                      uuid='4c45e89b-7780-4b78-8508-314fe04a7cbd',
                      fetch=True)

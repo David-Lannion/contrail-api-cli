@@ -9,10 +9,10 @@ from keystoneauth1.exceptions.http import HttpError
 
 from prompt_toolkit.document import Document
 
-from contrail_api_cli.context import Context
-from contrail_api_cli.completer import ShellCompleter
-from contrail_api_cli.resource import Resource
-from contrail_api_cli.exceptions import ResourceNotFound
+from src.contrail_api_cli.context import Context
+from src.contrail_api_cli.completer import ShellCompleter
+from src.contrail_api_cli.resource import Resource
+from src.contrail_api_cli.exceptions import ResourceNotFound
 
 from .utils import CLITest
 

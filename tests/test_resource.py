@@ -8,10 +8,10 @@ except ImportError:
 
 from keystoneauth1.exceptions.http import HttpError
 
-from contrail_api_cli.utils import Path, FQName
-from contrail_api_cli.resource import RootCollection, Collection, Resource, ResourceEncoder
-from contrail_api_cli.client import ContrailAPISession
-from contrail_api_cli.exceptions import ResourceNotFound, ResourceMissing, CollectionNotFound, ChildrenExists, BackRefsExists, IsSystemResource
+from src.contrail_api_cli.utils import Path, FQName
+from src.contrail_api_cli.resource import RootCollection, Collection, Resource, ResourceEncoder
+from src.contrail_api_cli.client import ContrailAPISession
+from src.contrail_api_cli.exceptions import ResourceNotFound, ResourceMissing, CollectionNotFound, ChildrenExists, BackRefsExists, IsSystemResource
 
 from .utils import CLITest
 

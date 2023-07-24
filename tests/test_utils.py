@@ -4,7 +4,7 @@ import unittest
 import sys
 import io
 
-from contrail_api_cli import utils
+from src.contrail_api_cli import utils
 
 
 class TestUtils(unittest.TestCase):

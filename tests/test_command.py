@@ -8,14 +8,14 @@ try:
 except ImportError:
     import unittest.mock as mock
 
-import contrail_api_cli.command as cmds
-from contrail_api_cli import client
-from contrail_api_cli.utils import Path, FQName
-from contrail_api_cli.context import Context
-from contrail_api_cli.resource import Resource, Collection
-from contrail_api_cli.exceptions import ResourceNotFound, CommandError
-from contrail_api_cli.schema import create_schema_from_version, DummySchema
-from contrail_api_cli.manager import CommandManager
+from src import contrail_api_cli as cmds
+from src.contrail_api_cli import client
+from src.contrail_api_cli.utils import Path, FQName
+from src.contrail_api_cli.context import Context
+from src.contrail_api_cli.resource import Resource, Collection
+from src.contrail_api_cli.exceptions import ResourceNotFound, CommandError
+from src.contrail_api_cli.schema import create_schema_from_version, DummySchema
+from src.contrail_api_cli.manager import CommandManager
 
 from .utils import CLITest
 

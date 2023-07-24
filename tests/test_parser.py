@@ -3,10 +3,10 @@ import unittest
 
 from prompt_toolkit.document import Document
 
-from contrail_api_cli.command import Command, Arg, Option
-from contrail_api_cli.manager import CommandManager
-from contrail_api_cli.parser import CommandParser
-from contrail_api_cli.exceptions import CommandNotFound, CommandInvalid
+from src.contrail_api_cli.command import Command, Arg, Option
+from src.contrail_api_cli.manager import CommandManager
+from src.contrail_api_cli.parser import CommandParser
+from src.contrail_api_cli.exceptions import CommandNotFound, CommandInvalid
 
 BASE = 'http://localhost:8082'
 

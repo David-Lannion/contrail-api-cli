@@ -17,7 +17,7 @@ import operator
 
 from six import add_metaclass
 
-import contrail_api_cli
+from .. import contrail_api_cli
 from .utils import to_json, Singleton
 from .resource import RootCollection
 from .idl_parser import IDLParser
